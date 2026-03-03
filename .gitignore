@@ -1,0 +1,86 @@
+# Build results
+bin/
+obj/
+Debug/
+Release/
+*.dll
+*.exe
+*.pdb
+*.so
+*.dylib
+
+# NuGet
+packages/
+*.nupkg
+*.nuspec
+.nuget/
+project.lock.json
+project.assets.json
+*.dgspec.json
+
+# IDE - JetBrains Rider
+.idea/
+*.sln.iml
+riderModule.iml
+/_ReSharper.Caches/
+.vs/
+.vscode/
+*.user
+*.userosscache
+*.suo
+*.sln.docstates
+
+# Local environment
+.env
+.env.local
+appsettings.local.json
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+*.bak
+*~
+.DS_Store
+
+# MAUI specific
+.maui/
+.nuget.config.local
+
+# Android specific
+.gradle/
+local.properties
+*.jks
+*.keystore
+
+# iOS specific
+*.xcworkspace/
+xcuserdata/
+Pods/
+Podfile.lock
+
+# macOS specific
+.DS_Store
+**/.DS_Store
+
+# Windows specific
+Thumbs.db
+.windows/
+
+# Runtime files
+*.dll.config
+*.exe.config
+
+# Test results
+TestResults/
+coverage/
+.coverage
+*.coverage
+
+# Build artifacts
+artifacts/
+publish/
+PublishProfiles/
+
+# Package manager cache
+.package_cache/
