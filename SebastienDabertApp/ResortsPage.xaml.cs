@@ -2,11 +2,11 @@ using SebastienDabertApp.ViewModels;
 
 namespace SebastienDabertApp;
 
-public partial class StationsPage : ContentPage
+public partial class ResortsPage : ContentPage
 {
     private readonly ResortsViewModel _viewModel;
 
-    public StationsPage(ResortsViewModel viewModel)
+    public ResortsPage(ResortsViewModel viewModel)
     {
         InitializeComponent();
         _viewModel = viewModel;

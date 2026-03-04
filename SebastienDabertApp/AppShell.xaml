@@ -20,8 +20,8 @@
         <ShellContent
             Title="Stations"
             Icon="icon_stations.png"
-            ContentTemplate="{DataTemplate local:StationsPage}"
-            Route="StationsPage" />
+            ContentTemplate="{DataTemplate local:ResortsPage}"
+            Route="ResortsPage" />
 
         <ShellContent
             Title="Ajouter"
