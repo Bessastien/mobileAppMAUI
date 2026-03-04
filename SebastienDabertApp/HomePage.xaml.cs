@@ -8,6 +8,11 @@ public partial class HomePage : ContentPage
         LoadCarouselData();
     }
 
+    private async void OnTrickButtonClicked(object? sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync(nameof(TrickPage));
+    }
+
     private void LoadCarouselData()
     {
         var items = new List<SkiCarouselItem>
