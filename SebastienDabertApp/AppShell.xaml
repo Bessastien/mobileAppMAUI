@@ -14,8 +14,8 @@
         <ShellContent
             Title="Accueil"
             Icon="icon_home.png"
-            ContentTemplate="{DataTemplate local:MainPage}"
-            Route="MainPage" />
+            ContentTemplate="{DataTemplate local:HomePage}"
+            Route="HomePage" />
 
         <ShellContent
             Title="Stations"
