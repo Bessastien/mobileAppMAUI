@@ -1,27 +1,24 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="SebastienDabertApp.MainPage"
-             Title="Accueil">
+             x:Class="SebastienDabertApp.ToolsPage"
+             Title="Outils">
 
     <VerticalStackLayout
         VerticalOptions="Center"
         HorizontalOptions="Center"
         Spacing="20">
-        <Image
-            Source="logo_ski.svg"
-            HeightRequest="150"
-            Aspect="AspectFit" />
         <Label
-            Text="Bienvenue !"
-            FontSize="32"
+            Text="Outils"
+            FontSize="28"
             FontAttributes="Bold"
             HorizontalOptions="Center" />
         <Label
-            Text="Application de Sébastien Dabert"
-            FontSize="18"
+            Text="Outils et paramètres pour le ski"
+            FontSize="16"
             TextColor="Gray"
             HorizontalOptions="Center" />
     </VerticalStackLayout>
 
 </ContentPage>
+
