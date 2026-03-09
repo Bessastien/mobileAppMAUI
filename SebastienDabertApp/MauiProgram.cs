@@ -28,11 +28,13 @@ public static class MauiProgram
         builder.Services.AddSingleton<ResortsViewModel>();
         builder.Services.AddTransient<ResortDetailViewModel>();
         builder.Services.AddTransient<AddResortViewModel>();
+        builder.Services.AddSingleton<ToolsViewModel>();
 
         // Pages : Transient pour recréer la page à chaque navigation
         builder.Services.AddTransient<ResortsPage>();
         builder.Services.AddTransient<ResortDetailPage>();
         builder.Services.AddTransient<AddPage>();
+        builder.Services.AddSingleton<ToolsPage>();
 
 #if DEBUG
         builder.Logging.AddDebug();
