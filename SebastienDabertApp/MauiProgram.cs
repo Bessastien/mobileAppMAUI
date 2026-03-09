@@ -25,9 +25,11 @@ public static class MauiProgram
 
         // ViewModels : Transient pour rafraîchir les données à chaque visite
         builder.Services.AddTransient<ResortsViewModel>();
+        builder.Services.AddTransient<ResortDetailViewModel>();
 
         // Pages : Transient pour recréer la page (et son ViewModel) à chaque navigation
         builder.Services.AddTransient<ResortsPage>();
+        builder.Services.AddTransient<ResortDetailPage>();
 
 #if DEBUG
         builder.Logging.AddDebug();

@@ -40,7 +40,10 @@
         <!-- Liste des stations -->
         <CollectionView Grid.Row="1"
                         ItemsSource="{Binding Resorts}"
-                        SelectionMode="None"
+                        SelectionMode="Single"
+                        SelectedItem="{Binding SelectedResort}"
+                        SelectionChangedCommand="{Binding GoToDetailCommand}"
+                        SelectionChangedCommandParameter="{Binding SelectedResort}"
                         Margin="16,8,16,0">
 
             <CollectionView.ItemsLayout>

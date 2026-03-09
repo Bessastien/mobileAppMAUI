@@ -16,6 +16,9 @@ public partial class ResortsViewModel : ObservableObject
     [ObservableProperty]
     private bool _isLoading;
 
+    [ObservableProperty]
+    private SkiResort? _selectedResort;
+
     public ResortsViewModel(WeatherApiService weatherService)
     {
         _weatherService = weatherService;
@@ -31,6 +34,24 @@ public partial class ResortsViewModel : ObservableObject
         {
             Resorts.Add(resort);
         }
+    }
+
+    /// <summary>
+    /// Commande déclenchée lors de la sélection d'une station dans la CollectionView.
+    /// Navigue vers la page de détail en passant la station comme paramètre.
+    /// </summary>
+    [RelayCommand]
+    private async Task GoToDetailAsync(SkiResort? resort)
+    {
+        if (resort is null) return;
+
+        // Réinitialise la sélection pour permettre de re-sélectionner la même station
+        SelectedResort = null;
+
+        await Shell.Current.GoToAsync(nameof(ResortDetailPage), new Dictionary<string, object>
+        {
+            { "SelectedResort", resort }
+        });
     }
 
     /// <summary>

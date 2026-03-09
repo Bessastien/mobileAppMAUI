@@ -1,4 +1,4 @@
-﻿namespace SebastienDabertApp;
+﻿﻿namespace SebastienDabertApp;
 
 public partial class AppShell : Shell
 {
@@ -6,5 +6,6 @@ public partial class AppShell : Shell
     {
         InitializeComponent();
         Routing.RegisterRoute(nameof(TrickPage), typeof(TrickPage));
+        Routing.RegisterRoute(nameof(ResortDetailPage), typeof(ResortDetailPage));
     }
 }
