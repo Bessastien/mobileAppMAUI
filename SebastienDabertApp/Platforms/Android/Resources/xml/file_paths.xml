@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <!-- Dossier interne de l'app (FileSystem.AppDataDirectory) -->
+    <files-path name="internal_files" path="." />
+    <!-- Cache interne -->
+    <cache-path name="internal_cache" path="." />
+    <!-- Stockage externe de l'app -->
+    <external-files-path name="external_files" path="." />
+    <!-- Cache externe -->
+    <external-cache-path name="external_cache" path="." />
+</paths>
+

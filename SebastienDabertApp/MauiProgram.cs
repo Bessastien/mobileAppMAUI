@@ -23,13 +23,16 @@ public static class MauiProgram
         // Services : Singleton car sans état mutable, une seule instance suffit
         builder.Services.AddSingleton<WeatherApiService>();
 
-        // ViewModels : Transient pour rafraîchir les données à chaque visite
-        builder.Services.AddTransient<ResortsViewModel>();
+        // ViewModels
+        // ResortsViewModel en Singleton : sa collection Resorts est partagée avec AddResortViewModel
+        builder.Services.AddSingleton<ResortsViewModel>();
         builder.Services.AddTransient<ResortDetailViewModel>();
+        builder.Services.AddTransient<AddResortViewModel>();
 
-        // Pages : Transient pour recréer la page (et son ViewModel) à chaque navigation
+        // Pages : Transient pour recréer la page à chaque navigation
         builder.Services.AddTransient<ResortsPage>();
         builder.Services.AddTransient<ResortDetailPage>();
+        builder.Services.AddTransient<AddPage>();
 
 #if DEBUG
         builder.Logging.AddDebug();
