@@ -78,7 +78,7 @@
             <!-- Section Localisation                                       -->
             <!-- ══════════════════════════════════════════════════════════ -->
             <VerticalStackLayout Spacing="12">
-                <Label Text="Localisation" FontSize="14" FontAttributes="Bold" TextColor="#E8E880" />
+                <Label Text="Localisation *" FontSize="14" FontAttributes="Bold" TextColor="#E8E880" />
 
                 <!-- Toggle 2 modes -->
                 <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
