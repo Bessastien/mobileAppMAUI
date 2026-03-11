@@ -26,13 +26,14 @@
                 <Border BackgroundColor="#37465E" StrokeShape="RoundRectangle 10"
                         Stroke="#3A3A5A" StrokeThickness="1" Padding="4,0">
                     <Entry Placeholder="ex : Tignes, Méribel…" PlaceholderColor="#555577"
-                           TextColor="White" Text="{Binding Name}" ReturnType="Next" FontSize="15" />
+                           TextColor="White" Text="{Binding Name, Mode=TwoWay}" ReturnType="Next" FontSize="15"
+                           TextChanged="OnNameEntryTextChanged" />
                 </Border>
             </VerticalStackLayout>
 
             <!-- ── Description ── -->
             <VerticalStackLayout Spacing="6">
-                <Label Text="Description" FontSize="14" FontAttributes="Bold" TextColor="#E8E880" />
+                <Label Text="Description *" FontSize="14" FontAttributes="Bold" TextColor="#E8E880" />
                 <Border BackgroundColor="#37465E" StrokeShape="RoundRectangle 10"
                         Stroke="#3A3A5A" StrokeThickness="1" Padding="4,4">
                     <Editor Placeholder="Décrivez la station (situation, spécialité…)"
@@ -46,7 +47,7 @@
             <!-- Section Image                                              -->
             <!-- ══════════════════════════════════════════════════════════ -->
             <VerticalStackLayout Spacing="10">
-                <Label Text="Photo de la station" FontSize="14" FontAttributes="Bold" TextColor="#E8E880" />
+                <Label Text="Photo de la station *" FontSize="14" FontAttributes="Bold" TextColor="#E8E880" />
 
                 <!-- Aperçu si image choisie -->
                 <Border StrokeShape="RoundRectangle 12" Stroke="#3A3A5A" StrokeThickness="1"
@@ -68,10 +69,16 @@
                     </VerticalStackLayout>
                 </Border>
 
-                <Button Text="Choisir depuis la galerie"
-                        Command="{Binding PickImageCommand}"
-                        BackgroundColor="#37465E" TextColor="#E8E880"
-                        FontSize="14" FontAttributes="Bold" CornerRadius="10" HeightRequest="48" />
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                    <Button Grid.Column="0" Text="Choisir depuis la galerie"
+                            Command="{Binding PickImageCommand}"
+                            BackgroundColor="#37465E" TextColor="#E8E880"
+                            FontSize="14" FontAttributes="Bold" CornerRadius="10" HeightRequest="48" />
+                    <Button Grid.Column="1" Text="Chercher sur internet"
+                            Command="{Binding FetchImageFromApiCommand}"
+                            BackgroundColor="#37465E" TextColor="#E8E880"
+                            FontSize="14" FontAttributes="Bold" CornerRadius="10" HeightRequest="48" />
+                </Grid>
             </VerticalStackLayout>
 
             <!-- ══════════════════════════════════════════════════════════ -->
@@ -177,10 +184,6 @@
                             </Border>
                         </VerticalStackLayout>
                     </Grid>
-                    <Button Text="Previsualiser la temperature"
-                            Command="{Binding PreviewTemperatureCommand}"
-                            BackgroundColor="#37465E" TextColor="#E8E880"
-                            FontSize="13" CornerRadius="8" HeightRequest="42" />
                 </VerticalStackLayout>
 
                 <!-- Statut localisation -->

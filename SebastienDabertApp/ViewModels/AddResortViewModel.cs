@@ -1,3 +1,4 @@
+using System.Text.Json;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SebastienDabertApp.Models;
@@ -15,6 +16,7 @@ public partial class AddResortViewModel(ResortsViewModel resortsViewModel, Weath
     private string _name = string.Empty;
 
     [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(AddResortCommand))]
     private string _description = string.Empty;
 
     // ── Image (galerie) ───────────────────────────────────────────────────────
@@ -26,7 +28,10 @@ public partial class AddResortViewModel(ResortsViewModel resortsViewModel, Weath
         set
         {
             if (SetProperty(ref _localImagePath, value))
+            {
                 OnPropertyChanged(nameof(HasImage));
+                AddResortCommand.NotifyCanExecuteChanged();
+            }
         }
     }
 
@@ -124,6 +129,69 @@ public partial class AddResortViewModel(ResortsViewModel resortsViewModel, Weath
         {
             ErrorMessage = $"Erreur : {ex.Message}";
             System.Diagnostics.Debug.WriteLine($"[PickImage] {ex}");
+        }
+    }
+
+    // ── Recherche image Unsplash ──────────────────────────────────────────────
+
+    [RelayCommand]
+    private async Task FetchImageFromApiAsync()
+    {
+        if (string.IsNullOrWhiteSpace(Name))
+        {
+            ErrorMessage = "Veuillez d'abord saisir le nom de la station";
+            return;
+        }
+
+        ErrorMessage = string.Empty;
+        IsLocating   = true;
+
+        try
+        {
+            const string apiKey = "hlYtx2MUKbHJ9E2brL-YaDNYX3P_8_D_2cbArE8k8FQ";
+            var query = Uri.EscapeDataString(Name.Trim());
+            var url   = $"https://api.unsplash.com/search/photos?query={query}&per_page=1&client_id={apiKey}";
+
+            using var httpClient = new HttpClient();
+            var response = await httpClient.GetAsync(url);
+            response.EnsureSuccessStatusCode();
+
+            var json = await response.Content.ReadAsStringAsync();
+            using var doc = JsonDocument.Parse(json);
+
+            var results = doc.RootElement.GetProperty("results");
+            if (results.GetArrayLength() == 0)
+            {
+                ErrorMessage = "Aucune image trouvée pour cette station.";
+                return;
+            }
+
+            var imageUrl = results[0]
+                .GetProperty("urls")
+                .GetProperty("regular")
+                .GetString();
+
+            if (string.IsNullOrWhiteSpace(imageUrl))
+            {
+                ErrorMessage = "URL d'image invalide retournée par l'API.";
+                return;
+            }
+
+            LocalImagePath = imageUrl;
+        }
+        catch (HttpRequestException ex)
+        {
+            ErrorMessage = $"Erreur réseau : {ex.Message}";
+            System.Diagnostics.Debug.WriteLine($"[FetchImageFromApi] {ex}");
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Erreur lors de la recherche d'image : {ex.Message}";
+            System.Diagnostics.Debug.WriteLine($"[FetchImageFromApi] {ex}");
+        }
+        finally
+        {
+            IsLocating = false;
         }
     }
 
@@ -245,6 +313,8 @@ public partial class AddResortViewModel(ResortsViewModel resortsViewModel, Weath
 
     private bool CanAddResort()
         => !string.IsNullOrWhiteSpace(Name)
+        && !string.IsNullOrWhiteSpace(Description)
+        && HasImage
         && !string.IsNullOrWhiteSpace(LatitudeText)
         && !string.IsNullOrWhiteSpace(LongitudeText);
 

@@ -61,7 +61,8 @@
                             Padding="16,14"
                             Shadow="{Shadow Brush='#000000', Offset='0,4', Radius=12, Opacity=0.4}">
 
-                        <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto" ColumnSpacing="12" RowSpacing="6">
+                        <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto"
+                              ColumnSpacing="12" RowSpacing="6">
 
                             <!-- Nom de la station -->
                             <Label Grid.Row="0" Grid.Column="0"

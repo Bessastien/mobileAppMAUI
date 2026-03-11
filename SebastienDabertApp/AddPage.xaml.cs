@@ -9,4 +9,12 @@ public partial class AddPage : ContentPage
         InitializeComponent();
         BindingContext = viewModel;
     }
+
+    private void OnNameEntryTextChanged(object? sender, TextChangedEventArgs e)
+    {
+        if (BindingContext is AddResortViewModel vm)
+        {
+            vm.Name = e.NewTextValue ?? string.Empty;
+        }
+    }
 }
