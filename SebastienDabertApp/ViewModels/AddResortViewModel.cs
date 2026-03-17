@@ -148,6 +148,8 @@ public partial class AddResortViewModel(ResortsViewModel resortsViewModel, Weath
 
         try
         {
+            // NOTE: La clé API est en dur pour ce projet scolaire. 
+            // Dans une vraie application, elle devrait être stockée de manière sécurisée (ex: Azure Key Vault) ou dans la configuration serveur.
             const string apiKey = "hlYtx2MUKbHJ9E2brL-YaDNYX3P_8_D_2cbArE8k8FQ";
             var query = Uri.EscapeDataString(Name.Trim());
             var url   = $"https://api.unsplash.com/search/photos?query={query}&per_page=1&client_id={apiKey}";
@@ -327,6 +329,8 @@ public partial class AddResortViewModel(ResortsViewModel resortsViewModel, Weath
                    System.Globalization.NumberStyles.Float, culture, out longitude);
     }
 }
+
+
 
 
 

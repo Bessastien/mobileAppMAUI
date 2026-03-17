@@ -12,7 +12,7 @@
 
         <!-- En-tête -->
         <VerticalStackLayout Grid.Row="0" Padding="20,20,20,8" Spacing="6">
-            <Label Text="Nos Stations"
+            <Label Text="Mes Stations"
                    FontSize="28"
                    FontAttributes="Bold"
                    TextColor="#E8E880"
@@ -40,40 +40,61 @@
         <!-- Liste des stations -->
         <CollectionView Grid.Row="1"
                         ItemsSource="{Binding Resorts}"
-                        SelectionMode="Single"
-                        SelectedItem="{Binding SelectedResort}"
-                        SelectionChangedCommand="{Binding GoToDetailCommand}"
-                        SelectionChangedCommandParameter="{Binding SelectedResort}"
-                        Margin="16,8,16,0">
-
-            <CollectionView.ItemsLayout>
-                <LinearItemsLayout Orientation="Vertical" ItemSpacing="16" />
-            </CollectionView.ItemsLayout>
+                        SelectionMode="None"
+                        Margin="12,0">
 
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="models:SkiResort">
 
-                    <!-- Carte station compacte -->
-                    <Border BackgroundColor="#37465E"
+                    <Border BackgroundColor="#2A2A4A"
                             StrokeShape="RoundRectangle 14"
                             Stroke="#3A3A5A"
                             StrokeThickness="1"
-                            Padding="16,14"
-                            Shadow="{Shadow Brush='#000000', Offset='0,4', Radius=12, Opacity=0.4}">
+                            Padding="10"
+                            Margin="0,6">
 
-                        <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto"
-                              ColumnSpacing="12" RowSpacing="6">
+                        <!-- Remplacement par une Grid à 3 colonnes pour inclure l'image -->
+                        <Grid ColumnDefinitions="100,*,Auto" RowDefinitions="Auto,Auto" ColumnSpacing="12" RowSpacing="4">
+
+                            <!-- Image de la station -->
+                            <Border Grid.Row="0" Grid.RowSpan="2" Grid.Column="0"
+                                    StrokeShape="RoundRectangle 10"
+                                    StrokeThickness="0"
+                                    HeightRequest="70"
+                                    WidthRequest="100"
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="Center">
+                                <Image Source="{Binding ImageUrl}"
+                                       Aspect="AspectFill"
+                                       HeightRequest="70"
+                                       WidthRequest="100" />
+                            </Border>
 
                             <!-- Nom de la station -->
-                            <Label Grid.Row="0" Grid.Column="0"
+                            <Label Grid.Row="0" Grid.Column="1"
                                    Text="{Binding Name}"
-                                   FontSize="18"
+                                   FontSize="16"
                                    FontAttributes="Bold"
                                    TextColor="White"
-                                   VerticalTextAlignment="Center" />
+                                   VerticalTextAlignment="End"
+                                   LineBreakMode="TailTruncation" />
+
+                            <!-- Latitude -->
+                            <HorizontalStackLayout Grid.Row="1" Grid.Column="1" Spacing="4" VerticalOptions="Start">
+                                <Label Text="📍" FontSize="12" TextColor="#888888" VerticalTextAlignment="Center" />
+                                <Label TextColor="#AAAAAA" FontSize="12" VerticalTextAlignment="Center">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{Binding Latitude, StringFormat='{0:F2}'}" />
+                                            <Span Text=", " />
+                                            <Span Text="{Binding Longitude, StringFormat='{0:F2}'}" />
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                            </HorizontalStackLayout>
 
                             <!-- Badge température -->
-                            <Border Grid.Row="0" Grid.Column="1"
+                            <Border Grid.Row="0" Grid.Column="2"
                                     Grid.RowSpan="2"
                                     BackgroundColor="#1B1B2F"
                                     StrokeShape="RoundRectangle 10"
@@ -93,18 +114,13 @@
                                 </VerticalStackLayout>
                             </Border>
 
-                            <!-- Latitude -->
-                            <HorizontalStackLayout Grid.Row="1" Grid.Column="0" Spacing="4">
-                                <Label Text="📍"
-                                       FontSize="12"
-                                       VerticalTextAlignment="Center" />
-                                <Label Text="{Binding Latitude, StringFormat='{0:F4}°N'}"
-                                       FontSize="13"
-                                       TextColor="#888888"
-                                       VerticalTextAlignment="Center" />
-                            </HorizontalStackLayout>
-
                         </Grid>
+
+                        <!-- GestureRecognizer pour la navigation -->
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:ResortsViewModel}}, Path=GoToDetailCommand}"
+                                                  CommandParameter="{Binding .}" />
+                        </Border.GestureRecognizers>
                     </Border>
 
                 </DataTemplate>
