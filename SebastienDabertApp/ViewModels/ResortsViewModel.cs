@@ -10,6 +10,7 @@ namespace SebastienDabertApp.ViewModels;
 public partial class ResortsViewModel : ObservableObject
 {
     private readonly WeatherApiService _weatherService;
+    private readonly DatabaseService _databaseService;
 
     public ObservableCollection<SkiResort> Resorts { get; } = new();
 
@@ -19,20 +20,42 @@ public partial class ResortsViewModel : ObservableObject
     [ObservableProperty]
     private SkiResort? _selectedResort;
 
-    public ResortsViewModel(WeatherApiService weatherService)
+    public ResortsViewModel(WeatherApiService weatherService, DatabaseService databaseService)
     {
         _weatherService = weatherService;
-        LoadResorts();
+        _databaseService = databaseService; 
+        LoadResortsAsync();
     }
 
     /// <summary>
-    /// Charge la liste des stations de ski depuis le fournisseur de données mock.
+    /// Charge la liste des stations de ski depuis la base de données.
     /// </summary>
-    private void LoadResorts()
+    private async void LoadResortsAsync()
     {
-        foreach (var resort in MockResortDataProvider.GetResorts())
+        if (IsLoading) return;
+        IsLoading = true;
+
+        try 
         {
-            Resorts.Add(resort);
+            var resorts = await _databaseService.GetResortsAsync();
+            
+            // On s'assure de modifier la collection sur le thread UI
+            MainThread.BeginInvokeOnMainThread(() => 
+            {
+                Resorts.Clear();
+                foreach (var resort in resorts)
+                {
+                    Resorts.Add(resort);
+                }
+            });
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Erreur chargement: {ex.Message}");
+        }
+        finally
+        {
+            IsLoading = false;
         }
     }
 
@@ -83,6 +106,3 @@ public partial class ResortsViewModel : ObservableObject
         }
     }
 }
-
-
-

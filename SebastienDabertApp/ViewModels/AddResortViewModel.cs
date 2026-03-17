@@ -6,7 +6,10 @@ using SebastienDabertApp.Services;
 
 namespace SebastienDabertApp.ViewModels;
 
-public partial class AddResortViewModel(ResortsViewModel resortsViewModel, WeatherApiService weatherService)
+public partial class AddResortViewModel(
+    ResortsViewModel resortsViewModel,
+    WeatherApiService weatherService,
+    DatabaseService databaseService) // Injection de DatabaseService
     : ObservableObject
 {
     // ── Formulaire ────────────────────────────────────────────────────────────
@@ -288,29 +291,40 @@ public partial class AddResortViewModel(ResortsViewModel resortsViewModel, Weath
         if (IsGpsMode && !string.IsNullOrWhiteSpace(LatitudeText))
             TryParseCoordinates(out latitude, out longitude);
 
-        var newId = resortsViewModel.Resorts.Count > 0
-            ? resortsViewModel.Resorts.Max(r => r.Id) + 1
-            : 1;
-
-        resortsViewModel.Resorts.Add(new SkiResort
+        // Création de l'objet
+        var newResort = new SkiResort
         {
-            Id          = newId,
+            // L'Id est généré par la base de données (0 par défaut)
             Name        = Name.Trim(),
             Description = Description.Trim(),
             ImageUrl    = string.IsNullOrWhiteSpace(LocalImagePath) ? "ski_mountain.jpeg" : LocalImagePath,
             Latitude    = latitude,
             Longitude   = longitude,
             CurrentTemperature = string.IsNullOrWhiteSpace(TemperaturePreview) ? "N/A" : TemperaturePreview
-        });
+        };
 
-        IsSuccess = true;
+        // Sauvegarde en base de données
+        try 
+        {
+            await databaseService.AddResortAsync(newResort);
+            
+            // Ajout à la collection observable pour mise à jour immédiate de l'UI
+            resortsViewModel.Resorts.Add(newResort);
 
-        Name = Description = LocalImagePath = LatitudeText = LongitudeText
-             = LocationStatus = TemperaturePreview = string.Empty;
-        IsGpsMode = true;
+            IsSuccess = true;
+            
+            // Reset du formulaire
+            Name = Description = LocalImagePath = LatitudeText = LongitudeText
+                 = LocationStatus = TemperaturePreview = string.Empty;
+            IsGpsMode = true;
 
-        await Task.Delay(800);
-        await Shell.Current.GoToAsync("..");
+            await Task.Delay(800);
+            await Shell.Current.GoToAsync("..");
+        }
+        catch (Exception ex)
+        {
+             ErrorMessage = $"Erreur lors de la sauvegarde : {ex.Message}";
+        }
     }
 
     private bool CanAddResort()
@@ -329,6 +343,8 @@ public partial class AddResortViewModel(ResortsViewModel resortsViewModel, Weath
                    System.Globalization.NumberStyles.Float, culture, out longitude);
     }
 }
+
+
 
 
 

@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
+using SebastienDabertApp.Data;
 using SebastienDabertApp.Services;
 using SebastienDabertApp.ViewModels;
 
@@ -17,11 +19,21 @@ public static class MauiProgram
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             });
 
+        // Base de données SQLite
+        // On définit le chemin de la BDD dans le dossier local de l'application
+        var dbPath = Path.Combine(FileSystem.AppDataDirectory, "ski_resorts.db");
+        
+        // On enregistre le DbContext. 
+        // Note: Pour une application MAUI simple (mono-utilisateur), un DbContext Singleton est acceptable.
+        builder.Services.AddDbContext<AppDbContext>(options =>
+            options.UseSqlite($"Data Source={dbPath}"), ServiceLifetime.Singleton);
+
         // HttpClient : Singleton pour réutiliser les connexions HTTP
         builder.Services.AddSingleton<HttpClient>();
 
-        // Services : Singleton car sans état mutable, une seule instance suffit
+        // Services : Singleton, car sans état mutable, une seule instance suffit
         builder.Services.AddSingleton<WeatherApiService>();
+        builder.Services.AddSingleton<DatabaseService>();
 
         // ViewModels
         // ResortsViewModel en Singleton : sa collection Resorts est partagée avec AddResortViewModel
